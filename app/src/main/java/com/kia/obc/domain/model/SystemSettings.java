@@ -36,4 +36,14 @@ public class SystemSettings {
         public String visualStyle = "Skeleton"; // Skeleton, Filled, Minimal
         public boolean aggressiveAlertOnOverSpeed = true;
     }
+
+    public static class ObdSettings {
+        public String connectionMethod = "Bluetooth"; // Bluetooth, USB, CAN
+        public String protocol = "Auto"; // ISO15765, ISO9141, SAEJ1850, Auto
+        public int pollIntervalMs = 200;
+        public boolean useObdAsPrimarySpeed = true;
+        public boolean triggerEventOnHardBraking = true;
+        public boolean filterNoise = true;
+        public String activePidList = "RPM,Speed,Temp,Voltage";
+    }
 }
