@@ -44,7 +44,42 @@ fun ObdDashboard(dataState: State<ObdData>) {
                     selected = selectedTab == DashboardTab.ADAS,
                     onClick = { selectedTab = DashboardTab.ADAS }
                 )
+                BottomNavigationItem(
+                    icon = { Icon(Icons.Default.Notifications, contentDescription = "Cams", tint = Color.White) },
+                    label = { Text("Cams", color = Color.White) },
+                    selected = selectedTab == DashboardTab.CAMS,
+                    onClick = { selectedTab = DashboardTab.CAMS }
+                )
             }
+        },
+        backgroundColor = Color.Black
+    ) { padding ->
+        Box(modifier = Modifier.padding(padding).fillMaxSize()) {
+            when (selectedTab) {
+                DashboardTab.MAIN -> MainTab(data)
+                DashboardTab.METRICS -> MetricsTab(data)
+                DashboardTab.ADAS -> ADASTab()
+                DashboardTab.CAMS -> CamsTab()
+            }
+        }
+    }
+}
+
+@Composable
+fun CamsTab() {
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
+        Text("取締 Speed Cams BY", style = MaterialTheme.typography.h4, color = Color.Yellow, modifier = Modifier.padding(bottom = 16.dp))
+        Text("Источники баз сигнатур:", style = MaterialTheme.typography.h6, color = Color.White)
+        Text("• SpeedCamOnline.ru (PoliScan, RoadEye)", color = Color.LightGray)
+        Text("• Speed-Control.by (Стационарные ГАИ)", color = Color.LightGray)
+        Spacer(modifier = Modifier.height(20.dp))
+        Text("Статус: Загрузка координат...", color = Color.Cyan)
+    }
+}
+
         },
         backgroundColor = Color.Black
     ) { padding ->
