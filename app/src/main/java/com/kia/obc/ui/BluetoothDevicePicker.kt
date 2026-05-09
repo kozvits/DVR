@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier;
 import androidx.compose.ui.unit.dp;
 import androidx.compose.ui.graphics.Color;
 import android.bluetooth.BluetoothDevice;
-import java.util.List;
 
 @Composable
 fun BluetoothDevicePicker(devices: List<BluetoothDevice>, onDeviceSelected: (BluetoothDevice) -> Unit) {

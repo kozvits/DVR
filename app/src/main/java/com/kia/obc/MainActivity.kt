@@ -19,7 +19,6 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Start the brain of the app as a Foreground Service
         val serviceIntent = Intent(this, com.kia.obc.service.ObcMainService::class.java)
         startForegroundService(serviceIntent)
 
@@ -29,6 +28,20 @@ class MainActivity : ComponentActivity() {
             PermissionHandler {
                 // Permissions granted
             }
+
+            if (showDevicePicker) {
+                val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
+                
+                BluetoothDevicePicker(pairedDevices) { device ->
+                    showDevicePicker = false
+                }
+            } else {
+                ObdDashboard(obdState, gpsState)
+            }
+        }
+    }
+}
+
 
             if (showDevicePicker) {
                 val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
