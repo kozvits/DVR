@@ -42,8 +42,20 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
             listOf(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
-        val allCriticalGranted = criticalPermissions.all { perm -> result[perm] == true }
-        if (allCriticalGranted) onPermissionsGranted();
+        val allCriticalGranted = criticalPermissions.all { perm -> 
+            result[perm] == true 
+        }
+        
+        // Log for debugging
+        result.forEach { (perm, granted) ->
+            android.util.Log.d("PermissionHandler", "$perm: $granted")
+        }
+
+        if (allCriticalGranted) {
+            onPermissionsGranted()
+        } else {
+            android.util.Log.e("PermissionHandler", "Critical permissions not granted")
+        }
     }
 
     LaunchedEffect(Unit) {
