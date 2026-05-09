@@ -1,5 +1,6 @@
 package com.kia.obc.data.location;
 
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,9 +16,9 @@ public class GpsManager {
         void onLocationChanged(Location location);
     }
 
-    public void startTracking(GpsCallback callback) {
+    public void startTracking(Context context, GpsCallback callback) {
         this.callback = callback;
-        locationManager = (LocationManager) android.content.Context.getSystemService(android.content.Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         
         try {
             locationManager.requestLocationUpdates(
@@ -39,7 +40,7 @@ public class GpsManager {
 
     public void stopTracking() {
         if (locationManager != null) {
-            // Implementation to remove updates
+            locationManager.removeUpdates();
         }
     }
 }
