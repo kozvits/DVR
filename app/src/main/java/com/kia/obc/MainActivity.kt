@@ -11,8 +11,6 @@ import com.kia.obc.domain.model.ObdData;
 import com.kia.obc.ui.ObdDashboard;
 import com.kia.obc.ui.PermissionHandler;
 import com.kia.obc.ui.BluetoothDevicePicker;
-import java.util.ArrayList;
-import java.util.List;
 
 class MainActivity : ComponentActivity() {
     private val obdState = mutableStateOf(ObdData(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
@@ -33,8 +31,12 @@ class MainActivity : ComponentActivity() {
             }
 
             if (showDevicePicker) {
-                val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
-                val deviceList = ArrayList<BluetoothDevice>(pairedDevices)
+                val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
+                val pairedDevices = bluetoothAdapter?.bondedDevices?.toList() ?: emptyList()
+                
+                // Manually create a java.util.List to avoid Kotlin List mismatch in Java-defined UI components
+                val deviceList = java.util.ArrayList<BluetoothDevice>()
+                deviceList.addAll(pairedDevices)
                 
                 BluetoothDevicePicker(deviceList) { device ->
                     showDevicePicker = false
@@ -42,41 +44,6 @@ class MainActivity : ComponentActivity() {
             } else {
                 ObdDashboard(obdState, gpsState)
             }
-        }
-    }
-}
-
-
-            if (showDevicePicker) {
-                val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
-                // Explicitly cast to java.util.List to satisfy the BluetoothDevicePicker signature
-                val deviceList: java.util.List<BluetoothDevice> = ArrayList(pairedDevices)
-                
-                BluetoothDevicePicker(deviceList) { device ->
-                    showDevicePicker = false
-                }
-            } else {
-                ObdDashboard(obdState, gpsState)
-            }
-        }
-    }
-}
-
-
-            if (showDevicePicker) {
-                val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
-                BluetoothDevicePicker(pairedDevices) { device ->
-                    // Connection logic will be handled via Service binding in next iteration
-                    showDevicePicker = false
-                }
-            } else {
-                ObdDashboard(obdState, gpsState)
-            }
-        }
-    }
-}
-
-            ObdDashboard(obdState, gpsState)
         }
     }
 }
