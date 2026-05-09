@@ -1,12 +1,14 @@
 package com.kia.obc.ui;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.activity.compose.rememberLauncherForActivityResult;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.compose.runtime.Composable;
 import androidx.compose.runtime.LaunchedEffect;
 import androidx.compose.ui.platform.LocalContext;
+import androidx.core.content.ContextCompat;
 
 @Composable
 fun PermissionHandler(onPermissionsGranted: () -> Unit) {
@@ -36,7 +38,6 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
-        // If result is empty, it means permissions were already granted
         if (result.isEmpty()) {
             onPermissionsGranted()
             return@rememberLauncherForActivityResult
@@ -48,49 +49,27 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
             listOf(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
-        val allCriticalGranted = criticalPermissions.all { perm -> 
-            result[perm] == true 
-        }
-        
+        val allCriticalGranted = criticalPermissions.all { perm -> result[perm] == true }
         if (allCriticalGranted) {
             onPermissionsGranted()
         }
     }
 
     LaunchedEffect(Unit) {
-        // Check if already granted before launching to avoid getting stuck
-        val isAllGranted = criticalPermissionsCheck(context)
-        if (isAllGranted) {
+        val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            listOf(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
+        val alreadyGranted = criticalPermissions.all { 
+            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED 
+        }
+
+        if (alreadyGranted) {
             onPermissionsGranted()
         } else {
             launcher.launch(permissions)
         }
-    }
-}
-
-private fun criticalPermissionsCheck(context: android.content.Context): Boolean {
-    // Simple helper to check status manually
-    return true // Force pass for debugging or implement real check
-}
-
-
-        val allCriticalGranted = criticalPermissions.all { perm -> 
-            result[perm] == true 
-        }
-        
-        // Log for debugging
-        result.forEach { (perm, granted) ->
-            android.util.Log.d("PermissionHandler", "$perm: $granted")
-        }
-
-        if (allCriticalGranted) {
-            onPermissionsGranted()
-        } else {
-            android.util.Log.e("PermissionHandler", "Critical permissions not granted")
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        launcher.launch(permissions);
     }
 }
