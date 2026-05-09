@@ -4,5 +4,6 @@ public enum DashboardTab {
     MAIN,
     METRICS,
     ADAS,
-    CAMS
+    CAMS,
+    SETTINGS
 }
