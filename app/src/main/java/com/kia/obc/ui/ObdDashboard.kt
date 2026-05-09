@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*;
 import androidx.compose.ui.Modifier;
 import androidx.compose.ui.unit.dp;
 import androidx.compose.ui.graphics.Color;
+import androidx.compose.ui.Alignment;
 import com.kia.obc.domain.model.ObdData;
 import com.kia.obc.domain.model.DashboardTab;
 import com.kia.obc.ui.settings.SettingsTab;
@@ -71,9 +72,10 @@ fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>) {
 fun MainTab(gpsSpeed: Double) {
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("GPS SPEED", style = MaterialTheme.typography.h6, color = Color.LightGray, modifier = Modifier.fillMaxWidth(), androidx.compose.ui.Alignment.Center)
+        Text("GPS SPEED", style = MaterialTheme.typography.h6, color = Color.LightGray, modifier = Modifier.fillMaxWidth(), textAlign = androidx.compose.ui.text.style.TextAlign.Center)
         MetricView("KM/H", String.format("%.1f", gpsSpeed), Color.Cyan)
     }
 }
@@ -103,7 +105,7 @@ fun MetricsTab(data: ObdData) {
 
 @Composable
 fun ADASTab() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Text("ADAS Vision Feed", color = Color.White, style = MaterialTheme.typography.h5)
     }
 }

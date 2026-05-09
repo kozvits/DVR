@@ -10,7 +10,8 @@ import com.kia.obc.ui.ObdDashboard;
 import com.kia.obc.ui.PermissionHandler;
 
 class MainActivity : ComponentActivity() {
-    private val obdState = mutableStateOf(ObdData(0.0, 0.0, 0.0, 0.0))
+    private val obdState = mutableStateOf(ObdData(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
+    private val gpsState = mutableStateOf(0.0)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
             PermissionHandler {
                 // Start service and bind logic here
             }
-            ObdDashboard(obdState)
+            ObdDashboard(obdState, gpsState)
         }
     }
 }

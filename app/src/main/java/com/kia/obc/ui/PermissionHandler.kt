@@ -21,16 +21,36 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
             Manifest.permission.BLUETOOTH_SCAN,
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.POST_NOTIFICATIONS
+            Manifest.permission.POST_NOTIFICATIONS,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         )
     } else {
         arrayOf(
             Manifest.permission.BLUETOOTH,
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
         )
     }
+
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestMultiplePermissions()
+    ) { result ->
+        var allGranted = true;
+        for (grant in result.values) {
+            if (!grant) allGranted = false;
+        }
+        if (allGranted) onPermissionsGranted();
+    }
+
+    LaunchedEffect(Unit) {
+        launcher.launch(permissions);
+    }
+}
+
 
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
