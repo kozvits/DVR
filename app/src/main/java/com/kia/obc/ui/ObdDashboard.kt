@@ -29,13 +29,13 @@ fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>) {
                     onClick = { selectedTab = DashboardTab.MAIN }
                 )
                 BottomNavigationItem(
-                    icon = { Icon(Icons.Default.Assessment, contentDescription = "OBD", tint = Color.White) },
+                    icon = { Icon(Icons.Default.List, contentDescription = "OBD", tint = Color.White) },
                     label = { Text("OBD", color = Color.White) },
                     selected = selectedTab == DashboardTab.METRICS,
                     onClick = { selectedTab = DashboardTab.METRICS }
                 )
                 BottomNavigationItem(
-                    icon = { Icon(Icons.Default.Videocam, contentDescription = "ADAS", tint = Color.White) },
+                    icon = { Icon(Icons.Default.PlayArrow, contentDescription = "ADAS", tint = Color.White) },
                     label = { Text("ADAS", color = Color.White) },
                     selected = selectedTab == DashboardTab.ADAS,
                     onClick = { selectedTab = DashboardTab.ADAS }
