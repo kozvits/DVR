@@ -36,11 +36,14 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
-        var allGranted = true;
-        for (grant in result.values) {
-            if (!grant) allGranted = false;
+        val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION)
+        } else {
+            listOf(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_FINE_LOCATION)
         }
-        if (allGranted) onPermissionsGranted();
+
+        val allCriticalGranted = criticalPermissions.all { perm -> result[perm] == true }
+        if (allCriticalGranted) onPermissionsGranted();
     }
 
     LaunchedEffect(Unit) {
