@@ -1,15 +1,12 @@
 package com.kia.obc.ui;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import androidx.activity.compose.rememberLauncherForActivityResult;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.compose.runtime.Composable;
 import androidx.compose.runtime.LaunchedEffect;
 import androidx.compose.ui.platform.LocalContext;
-import android.content.Context;
-import androidx.core.content.ContextCompat;
 
 @Composable
 fun PermissionHandler(onPermissionsGranted: () -> Unit) {
@@ -41,22 +38,6 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
     ) { result ->
         var allGranted = true;
         for (grant in result.values) {
-            if (!grant) allGranted = false;
-        }
-        if (allGranted) onPermissionsGranted();
-    }
-
-    LaunchedEffect(Unit) {
-        launcher.launch(permissions);
-    }
-}
-
-
-    val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { result ->
-        boolean allGranted = true;
-        for (grant : result.values()) {
             if (!grant) allGranted = false;
         }
         if (allGranted) onPermissionsGranted();
