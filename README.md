@@ -1,15 +1,81 @@
-# KIA Rio (2001) OBC & ADAS System
+# 🚗 KIA Rio (2001) OBC & ADAS System
 
-Professional Android application providing On-Board Computing and Advanced Driver Assistance for 2001 KIA Rio.
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Platform](https://img.shields.io/badge/platform-Android%2013+-green)
+![Protocol](https://img.shields.io/badge/OBD-KWP2000-orange)
 
-## Technical Specifications
-- **OBD Protocol**: ISO 9141-2 / KWP2000
-- **Connection**: Bluetooth SPP
-- **Vision**: TFLite GPU Accelerated LDW/FCW
-- **DVR**: Circular Buffer Loop Recording
+Профессиональное Android-приложение, превращающее современный смартфон в полноценный бортовой компьютер (OBC) и систему помощи водителю (ADAS) специально для **KIA Rio (2001)**.
 
-## Setup & Build
-1. Clone this repository.
-2. Open in Android Studio Flamingo or newer.
-3. Add `adas_model.tflite` to `app/src/main/assets/`.
-4. Build and deploy to an Android 13+ device.
+---
+
+## 🌟 Основной функционал
+
+### 🛠 Модуль А: Диагностика и Телеметрия (OBD-II)
+Приложение реализует прямой обмен данными с ЭБУ автомобиля через протокол **ISO 9141-2**.
+
+*   **Основные показатели**:
+    *   `RPM` — Обороты двигателя в реальном времени.
+    *   `Speed` — Точная скорость автомобиля.
+    *   `Coolant Temp` — Контроль температуры охлаждающей жидкости.
+    *   `Fuel Level` — Мониторинг уровня топлива в баке.
+*   **Расширенные метрики**:
+    *   ⛽ **Расход**: Мгновенный, средний и суммарный расход топлива.
+    *   🛣 **Поездка**: Пройденная дистанция и время в пути.
+    *   ⚡ **Электрика**: Напряжение на блоке управления (ECU Voltage).
+*   **Особенности**: 
+    *   Режим **Safe Mode** (ограничение частоты запросов), чтобы не перегружать старый ЭБУ.
+    *   Высококонтрастный интерфейс (Jetpack Compose) для безопасного использования за рулем.
+
+### 👁 Модуль B: Интеллектуальное зрение (ADAS)
+Использование нейросетей через **TensorFlow Lite** с GPU-ускорением для анализа дорожной обстановки.
+
+*   **LDW (Lane Departure Warning)**: Детекция разметки дороги и предупреждение о выходе из полосы.
+*   **FCW (Forward Collision Warning)**: Определение объектов (автомобили, пешеходы) и расчет дистанции по скорости роста ограничивающей рамки (Bounding Box).
+*   **DMS (Driver Monitoring System)**: Мониторинг состояния водителя (анализ частоты моргания и зевков) для предотвращения засыпания.
+
+### 📹 Модуль C: Циклический видеорегистратор (DVR)
+*   **Loop Recording**: Автоматическая запись видео короткими клипами.
+*   **Умное управление памятью**: Автоматическая очистка старых файлов при достижении лимита в **2 ГБ**, чтобы не переполнять память устройства.
+
+---
+
+## 🛠 Технический стек
+
+| Компонент | Технология |
+| :--- | :--- |
+| **Язык** | Kotlin / Java |
+| **UI** | Jetpack Compose (60 FPS) |
+| **Связь** | Bluetooth SPP / ISO 9141-2 (KWP2000) |
+| **ML/Vision** | TensorFlow Lite / GPU Delegate / NNAPI |
+| **Архитектура** | Clean Architecture (Domain, Data, UI) |
+| **Асинхронность** | Kotlin Coroutines & StateFlow |
+
+---
+
+## 🚀 Установка и запуск
+
+### Требования
+- Смартфон с **Android 13+**.
+- OBD-II адаптер **ELM327** (поддерживающий ISO 9141-2).
+- Модель нейросети `adas_model.tflite`.
+
+### Инструкция по сборке
+1. **Клонируйте репозиторий**:
+   ```bash
+   git clone https://github.com/your-username/KIA-Rio-OBC-ADAS.git
+   ```
+2. **Подготовьте модель**:
+   Поместите файл модели `adas_model.tflite` в папку `app/src/main/assets/`.
+3. **Сборка в Android Studio**:
+   * Откройте проект в Android Studio (Flamingo или новее).
+   * Выполните `Build` $\rightarrow$ `Make Project`.
+4. **Запуск**:
+   * Установите APK на устройство.
+   * Предоставьте все запрашиваемые разрешения (Bluetooth, Камера, Микрофон, Память).
+   * Соединитесь с OBD-II адаптером через настройки Bluetooth.
+
+---
+
+## ⚠️ Важные примечания
+*   **Безопасность**: Данное приложение является вспомогательным инструментом. Ответственность за управление автомобилем лежит на водителе.
+*   **Настройка**: Если некоторые PID не считываются, проверьте совместимость вашего ЭБУ с протоколом KWP2000.
