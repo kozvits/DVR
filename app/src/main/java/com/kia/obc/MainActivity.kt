@@ -41,22 +41,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-            if (showDevicePicker) {
-                val bluetoothAdapter = BluetoothAdapter.getDefaultAdapter()
-                val pairedDevices = bluetoothAdapter?.bondedDevices?.toList() ?: emptyList()
-                
-                // Manually create a java.util.List to avoid Kotlin List mismatch in Java-defined UI components
-                val deviceList = java.util.ArrayList<BluetoothDevice>()
-                deviceList.addAll(pairedDevices)
-                
-                BluetoothDevicePicker(deviceList) { device ->
-                    showDevicePicker = false
-                }
-            } else {
-                ObdDashboard(obdState, gpsState)
-            }
-        }
-    }
-}
