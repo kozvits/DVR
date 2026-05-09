@@ -34,6 +34,21 @@ class MainActivity : ComponentActivity() {
 
             if (showDevicePicker) {
                 val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
+                val deviceList = ArrayList<BluetoothDevice>(pairedDevices)
+                
+                BluetoothDevicePicker(deviceList) { device ->
+                    showDevicePicker = false
+                }
+            } else {
+                ObdDashboard(obdState, gpsState)
+            }
+        }
+    }
+}
+
+
+            if (showDevicePicker) {
+                val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
                 // Explicitly cast to java.util.List to satisfy the BluetoothDevicePicker signature
                 val deviceList: java.util.List<BluetoothDevice> = ArrayList(pairedDevices)
                 
