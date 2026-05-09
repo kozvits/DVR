@@ -14,7 +14,7 @@ import com.kia.obc.domain.model.DashboardTab;
 import com.kia.obc.ui.settings.SettingsTab;
 
 @Composable
-fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>) {
+fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>, onConnectObd: (BluetoothDevice) -> Unit) {
     var selectedTab by remember { mutableStateOf(DashboardTab.MAIN) }
     val data = dataState.value
     val gpsSpeed = gpsState.value
@@ -62,7 +62,7 @@ fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>) {
                 DashboardTab.METRICS -> MetricsTab(data)
                 DashboardTab.ADAS -> ADASTab()
                 DashboardTab.CAMS -> CamsTab()
-                DashboardTab.SETTINGS -> SettingsTab()
+                DashboardTab.SETTINGS -> SettingsTab(onConnectObd)
             }
         }
     }
