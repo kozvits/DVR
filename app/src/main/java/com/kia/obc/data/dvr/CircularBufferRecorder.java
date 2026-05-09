@@ -11,8 +11,9 @@ import java.util.List;
 
 public class CircularBufferRecorder {
     private static final String TAG = "DVR_Engine";
-    private static final long MAX_STORAGE_MB = 2048; // 2GB Loop
-    private static final int CLIP_DURATION_SEC = 60;
+    private static long MAX_STORAGE_MB = 2048; // 2GB Loop
+    private static int CLIP_DURATION_SEC = 60;
+
 
     private final Context context;
     private MediaRecorder mediaRecorder;
@@ -88,8 +89,14 @@ public class CircularBufferRecorder {
         return new File(dir, "DVR_" + System.currentTimeMillis() + ".mp4");
     }
 
-    public void stop() {
-        stopRecording();
-        if (mediaRecorder != null) mediaRecorder.release();
+    public void markEvent() {
+        Log.d(TAG, "Event triggered: saving current clip as permanent");
+        if (currentFile != null) {
+            File eventFile = new File(currentFile.getParent(), "EVENT_" + currentFile.getName());
+            currentFile.renameTo(eventFile);
+            recordedFiles.remove(currentFile);
+            recordedFiles.add(eventFile);
+            currentFile = eventFile;
+        }
     }
 }

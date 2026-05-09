@@ -25,11 +25,10 @@ public class ADASPipeline {
         return output[0];
     }
 
-    public float estimateDistance(float bboxWidth, float bboxHeight) {
-        // FCW: Distance estimation based on Bounding Box Growth Rate
-        // d = (KnownWidth * FocalLength) / ActualWidth
+    public float estimateDistance(float bboxWidth, float bboxHeight, String mode) {
+        float modifier = mode.equals("Short") ? 0.8f : mode.equals("Long") ? 1.2f : 1.0f;
         float growthRate = (bboxWidth * bboxHeight);
-        return 1.0f / (growthRate + 0.001f); // Simplified inverse relation
+        return (1.0f / (growthRate + 0.001f)) * modifier;
     }
 
     private ByteBuffer preprocess(Bitmap bitmap) {
