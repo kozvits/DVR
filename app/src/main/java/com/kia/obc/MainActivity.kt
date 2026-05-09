@@ -12,6 +12,7 @@ import com.kia.obc.ui.ObdDashboard;
 import com.kia.obc.ui.PermissionHandler;
 import com.kia.obc.ui.BluetoothDevicePicker;
 import java.util.ArrayList;
+import java.util.List;
 
 class MainActivity : ComponentActivity() {
     private val obdState = mutableStateOf(ObdData(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
@@ -30,6 +31,22 @@ class MainActivity : ComponentActivity() {
             PermissionHandler {
                 // Permissions granted
             }
+
+            if (showDevicePicker) {
+                val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
+                // Explicitly cast to java.util.List to satisfy the BluetoothDevicePicker signature
+                val deviceList: java.util.List<BluetoothDevice> = ArrayList(pairedDevices)
+                
+                BluetoothDevicePicker(deviceList) { device ->
+                    showDevicePicker = false
+                }
+            } else {
+                ObdDashboard(obdState, gpsState)
+            }
+        }
+    }
+}
+
 
             if (showDevicePicker) {
                 val pairedDevices = BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
