@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment;
 import androidx.compose.ui.Modifier;
 import androidx.compose.material.Text;
 import androidx.compose.ui.graphics.Color;
+import androidx.compose.material.CircularProgressIndicator;
 import com.kia.obc.domain.model.ObdData;
 import com.kia.obc.ui.ObdDashboard;
 import com.kia.obc.ui.PermissionHandler;
@@ -55,7 +56,7 @@ class MainActivity : ComponentActivity() {
                 }
             } else {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Ожидание разрешений...", color = Color.White)
+                    CircularProgressIndicator(color = Color.White)
                 }
             }
         }

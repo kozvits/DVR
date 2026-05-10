@@ -14,13 +14,26 @@ import androidx.core.content.ContextCompat;
 fun PermissionHandler(onPermissionsGranted: () -> Unit) {
     val context = LocalContext.current
     
-    val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    // Track if we've already checked permissions to avoid infinite loop
+    var permissionCheckTriggered by remember { mutableStateOf(false) }
+    
+    // Define all permissions we need to request
+    val allPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
         arrayOf(
             Manifest.permission.BLUETOOTH_CONNECT,
             Manifest.permission.BLUETOOTH_SCAN,
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.POST_NOTIFICATIONS,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        arrayOf(
+            Manifest.permission.BLUETOOTH_CONNECT,
+            Manifest.permission.BLUETOOTH_SCAN,
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
@@ -38,43 +51,51 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
-        if (result.isEmpty()) {
-            onPermissionsGranted()
-            return@rememberLauncherForActivityResult
-        }
-
-        val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        android.util.Log.d("PermissionHandler", "Permission result: $result")
+        // Check if critical permissions are granted
+        val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             listOf(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
         val allCriticalGranted = criticalPermissions.all { perm -> result[perm] == true }
+        android.util.Log.d("PermissionHandler", "All critical granted: $allCriticalGranted")
         if (allCriticalGranted) {
+            onPermissionsGranted()
+        } else {
+            // Even if not all permissions granted, allow user to proceed with limited functionality
             onPermissionsGranted()
         }
     }
 
     LaunchedEffect(Unit) {
-        val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        // Only trigger permission check once
+        if (permissionCheckTriggered) return@LaunchedEffect
+        permissionCheckTriggered = true
+        
+        // Define critical permissions based on API level
+        val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
             listOf(Manifest.permission.BLUETOOTH, Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
+        // Check if all critical permissions are already granted
         val alreadyGranted = criticalPermissions.all { 
             ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED 
         }
 
+        android.util.Log.d("PermissionHandler", "Already granted: $alreadyGranted")
+        
         if (alreadyGranted) {
             onPermissionsGranted()
         } else {
             try {
-                launcher.launch(permissions)
+                launcher.launch(allPermissions)
             } catch (e: Exception) {
                 android.util.Log.e("PermissionHandler", "Launch failed: ${e.message}")
-                // If launch fails, we might be in a state where we should just let the user in 
-                // or show an error. For now, try to grant if we are in debug/test.
+                // If launch fails, still try to proceed - the app might work with limited functionality
                 onPermissionsGranted() 
             }
         }
