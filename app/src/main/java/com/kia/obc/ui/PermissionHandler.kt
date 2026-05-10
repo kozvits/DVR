@@ -35,14 +35,11 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
         )
     }
 
+    var hasPermissions by remember { mutableStateOf(false) }
+
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
-        // result.isEmpty() means no permissions were requested - treat as not granted
-        if (result.isEmpty()) {
-            return@rememberLauncherForActivityResult
-        }
-
         val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
@@ -50,12 +47,13 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
         }
 
         val allCriticalGranted = criticalPermissions.all { perm -> result[perm] == true }
+        hasPermissions = allCriticalGranted
         if (allCriticalGranted) {
             onPermissionsGranted()
         }
     }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(hasPermissions) {
         val criticalPermissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             listOf(Manifest.permission.BLUETOOTH_CONNECT, Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.ACCESS_FINE_LOCATION)
         } else {
@@ -67,15 +65,20 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
         }
 
         if (alreadyGranted) {
+            hasPermissions = true
             onPermissionsGranted()
-        } else {
-            // Check if any permission needs to be requested before launching
+        } else if (!hasPermissions) {
             val permissionsToRequest = permissions.filter { 
                 ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED 
             }.toTypedArray()
             
             if (permissionsToRequest.isNotEmpty()) {
                 launcher.launch(permissionsToRequest)
+            } else {
+                // Все запрошенные разрешения уже есть, но criticalPermissions проверка не прошла
+                // Это может быть на старых версиях Android или специфичная конфигурация
+                hasPermissions = true
+                onPermissionsGranted()
             }
         }
     }
