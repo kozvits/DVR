@@ -1,346 +1,58 @@
-# Compiled and build artifacts
-*.class
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.a
-*.out
-*.pyc
-__pycache__/
-*.pyo
-*.pyd
+```
+# Build artifacts
+build/
+*.apk
+*.aar
 *.jar
-*.war
-*.ear
-*.zip
-*.tar.gz
-*.tar
-*.gz
-*.rar
-*.7z
-*.bz2
-*.xz
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
+*.class
 
 # Dependencies
+.gradle/
 node_modules/
 venv/
 .venv/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Environment
 .env
 .env.local
-.env.*
-.gradle/
-target/
-build/
-dist/
-out/
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS
 .DS_Store
 Thumbs.db
 
-# IDE and editor files
-.vscode/
-.idea/
-*.swp
-*.swo
-*.tmp
-*.log
-*.tmp
+# Coverage
 coverage/
 htmlcov/
 .coverage
-.mypy_cache/
-.pytest_cache/
 
-# Build and distribution directories
-*.egg-info/
-.eggs/
-.installed.cfg
-*.egg
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-Thumbs.db:encryptable
-*.stackdump
-
-# Python specific
+# Python
 __pycache__/
-*.py[cod]
-*$py.class
-*.so
+*.pyc
+*.pyo
+*.pyd
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
+*.so
 *.egg-info/
-.installed.cfg
-*.egg
+.eggs/
 
-# Java specific
+# Java/Gradle
 *.class
 *.jar
 *.war
 *.ear
-*.jsp
-target/
-build/
-out/
-.gradle/
-.DS_Store
-Thumbs.db
-
-# Kotlin specific
-*.kotlin_metadata
-*.kotlin_built
-*.kt.class
-*.kts.class
-
-# Android specific
-*.apk
-*.aar
-*.ap_
-local.properties
-captures/
-.externalNativeBuild
-.gradle
-build/
-.app/
-.intermediates/
-.kotlin/
-.libs/
-
-# Gradle specific
-.gradle/
-.gradle/**
-!/.gradle/build-scan-info/
-build/
-*.gradle
-!gradle-wrapper.properties
-
-# IntelliJ IDEA
-.idea/
-*.iml
-*.ipr
-*.iws
-out/
-
-# Eclipse
-.metadata
-bin/
-tmp/
-*.tmp
-*.bak
-*.swp
-*~
-.project
-.classpath
-.settings/
-.factorypath
-
-# NetBeans
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
-# Visual Studio Code
-.vscode/
-.vscode-test/
-
-# Temporary files
-*.tmp
-*.temp
-*.log
-*.swp
-*.swo
-*~
-
-# Environment variables
-.env
-.env.local
-.env.*
-
-# Coverage reports
-coverage/
-htmlcov/
-*.coverage
-.coverage.*
-
-# Distribution / packaging
-.Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-pip-wheel-metadata/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py,cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask
-instance/
-.webassets-cache
-
-# Scrapy
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# pipenv
-Pipfile.lock
-
-# PEP 582
-__pypackages__/
-
-# Celery
-celerybeat-schedule
-celerybeat.pid
-
-# Sage
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre
-.pyre/
-
-# FastAPI
-*.db
-*.db-journal
-
-# Compressed files
 *.zip
-*.tar.gz
-*.tar
-*.gz
-*.rar
-*.7z
-*.bz2
-*.xz
-*.zst
-*.lz4
-*.lzh
-*.cab
-*.arj
-*.rpm
-*.deb
-*.Z
-*.lz
-*.lzo
-
-# Image files (do not ignore as per requirements)
-# .png, .jpg, .jpeg, .bmp, .gif, .webm are not ignored
-
-# Original rule preserved
-*.log
+!*.gradle
+```
