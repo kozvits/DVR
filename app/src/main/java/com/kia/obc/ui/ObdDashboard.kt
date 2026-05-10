@@ -135,7 +135,7 @@ fun ADASTab() {
                         verticalArrangement = Arrangement.Center
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Videocam,
+                            imageVector = Icons.Filled.Videocam,
                             contentDescription = "Camera",
                             tint = Color.White,
                             modifier = Modifier.size(100.dp)
