@@ -106,8 +106,73 @@ fun MetricsTab(data: ObdData) {
 
 @Composable
 fun ADASTab() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("ADAS Vision Feed", color = Color.White, style = MaterialTheme.typography.h5)
+    var cameraPermissionGranted by remember { mutableStateOf(false) }
+    var showCameraFeed by remember { mutableStateOf(false) }
+    
+    // Check camera permission
+    LaunchedEffect(Unit) {
+        // In a real app, you'd check CAMERA permission here
+        cameraPermissionGranted = true
+        showCameraFeed = true
+    }
+    
+    if (cameraPermissionGranted && showCameraFeed) {
+        // Camera preview placeholder - in production would use CameraX
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            // Mock camera feed with detection overlay
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = Color.DarkGray
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Videocam,
+                            contentDescription = "Camera",
+                            tint = Color.White,
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            "Камера активна",
+                            style = MaterialTheme.typography.h5,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            "ADAS обнаружение в работе",
+                            style = MaterialTheme.typography.body1,
+                            color = Color.Green
+                        )
+                        // Mock detection box
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Surface(
+                            modifier = Modifier.size(200.dp, 120.dp),
+                            border = BorderStroke(3.dp, Color.Green),
+                            color = Color.Transparent
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Text("Автомобиль\n85%", color = Color.Green, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator(color = Color.White)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Запрос разрешения камеры...", color = Color.White)
+            }
+        }
     }
 }
 

@@ -28,31 +28,21 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             var permissionsGranted by remember { mutableStateOf(false) }
-            var showDevicePicker by remember { mutableStateOf(true) }
 
             PermissionHandler {
                 permissionsGranted = true
             }
 
             if (permissionsGranted) {
-                if (showDevicePicker) {
-                    val pairedDevices = remember {
-                        BluetoothAdapter.getDefaultAdapter()?.bondedDevices?.toList() ?: emptyList()
-                    }
-                    
-                    BluetoothDevicePicker(pairedDevices) { device ->
-                        // Start service only when device is selected
-                        val serviceIntent = Intent(this@MainActivity, com.kia.obc.service.ObcMainService::class.java)
-                        startForegroundService(serviceIntent)
-                        showDevicePicker = false
-                    }
-                } else {
-                    ObdDashboard(obdState, gpsState) { device ->
-                        val serviceIntent = Intent(this@MainActivity, com.kia.obc.service.ObcMainService::class.java)
-                        serviceIntent.action = "ACTION_CONNECT_OBD"
-                        serviceIntent.putExtra("device_extra", device)
-                        startService(serviceIntent)
-                    }
+                // Start service automatically after permissions granted
+                val serviceIntent = Intent(this@MainActivity, com.kia.obc.service.ObcMainService::class.java)
+                startForegroundService(serviceIntent)
+                
+                ObdDashboard(obdState, gpsState) { device ->
+                    val serviceIntentConnect = Intent(this@MainActivity, com.kia.obc.service.ObcMainService::class.java)
+                    serviceIntentConnect.action = "ACTION_CONNECT_OBD"
+                    serviceIntentConnect.putExtra("device_extra", device)
+                    startService(serviceIntentConnect)
                 }
             } else {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
