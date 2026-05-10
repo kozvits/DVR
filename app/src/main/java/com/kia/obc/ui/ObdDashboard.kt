@@ -1,20 +1,18 @@
-package com.kia.obc.ui;
+package com.kia.obc.ui
 
-import androidx.compose.runtime.*;
-import androidx.compose.material.*;
-import androidx.compose.material.icons.Icons;
-import androidx.compose.material.icons.filled.*;
-import androidx.compose.material.icons.filled.Videocam;
-import androidx.compose.foundation.layout.*;
-import androidx.compose.foundation.BorderStroke;
-import androidx.compose.ui.Modifier;
-import androidx.compose.ui.unit.dp;
-import androidx.compose.ui.graphics.Color;
-import androidx.compose.ui.Alignment;
-import android.bluetooth.BluetoothDevice;
-import com.kia.obc.domain.model.ObdData;
-import com.kia.obc.domain.model.DashboardTab;
-import com.kia.obc.ui.settings.SettingsTab;
+import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+import android.bluetooth.BluetoothDevice
+import com.kia.obc.domain.model.ObdData
+import com.kia.obc.domain.model.DashboardTab
+import com.kia.obc.ui.settings.SettingsTab
 
 @Composable
 fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>, onConnectObd: (BluetoothDevice) -> Unit) {
@@ -92,11 +90,11 @@ fun MetricsTab(data: ObdData) {
         Text("OBD Telemetry", style = MaterialTheme.typography.h4, color = Color.White, modifier = Modifier.padding(bottom = 16.dp))
         MetricView("RPM", String.format("%.0f", data.rpm), Color.Green)
         MetricView("OBD Speed", String.format("%.0f km/h", data.vehicleSpeed), Color.Cyan)
-        MetricView("Temp", String.format("%.1f В°C", data.coolantTemp), Color.Red)
+        MetricView("Temp", String.format("%.1f °C", data.coolantTemp), Color.Red)
         MetricView("Fuel", String.format("%.1f %%", data.fuelLevel), Color.Yellow)
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         MetricView("Inst. Fuel", String.format("%.2f L/h", data.instantFuel), Color.White)
         MetricView("Avg Fuel", String.format("%.2f L/100km", data.avgFuel), Color.White)
         MetricView("Total Fuel", String.format("%.2f L", data.totalFuel), Color.White)
@@ -110,14 +108,14 @@ fun MetricsTab(data: ObdData) {
 fun ADASTab() {
     var cameraPermissionGranted by remember { mutableStateOf(false) }
     var showCameraFeed by remember { mutableStateOf(false) }
-    
+
     // Check camera permission
     LaunchedEffect(Unit) {
-        // In a real app, you'd check CAMERA permission here
+        // В реальном приложении здесь нужно проверять разрешение КАМЕРЫ
         cameraPermissionGranted = true
         showCameraFeed = true
     }
-    
+
     if (cameraPermissionGranted && showCameraFeed) {
         // Camera preview placeholder - in production would use CameraX
         Box(
@@ -142,13 +140,13 @@ fun ADASTab() {
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
-                            "РљР°РјРµСЂР° Р°РєС‚РёРІРЅР°",
+                            "Камера активна",
                             style = MaterialTheme.typography.h5,
                             color = Color.White
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
-                            "ADAS РѕР±РЅР°СЂСѓР¶РµРЅРёРµ РІ СЂР°Р±РѕС‚Рµ",
+                            "ADAS обнаружение в работе",
                             style = MaterialTheme.typography.body1,
                             color = Color.Green
                         )
@@ -160,7 +158,7 @@ fun ADASTab() {
                             color = Color.Transparent
                         ) {
                             Box(contentAlignment = Alignment.Center) {
-                                Text("РђРІС‚РѕРјРѕР±РёР»СЊ\n85%", color = Color.Green, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                                Text("Автомобиль\n85%", color = Color.Green, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
                             }
                         }
                     }
@@ -172,7 +170,7 @@ fun ADASTab() {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 CircularProgressIndicator(color = Color.White)
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Р—Р°РїСЂРѕСЃ СЂР°Р·СЂРµС€РµРЅРёСЏ РєР°РјРµСЂС‹...", color = Color.White)
+                Text("Запрос разрешения камеры...", color = Color.White)
             }
         }
     }
@@ -184,12 +182,12 @@ fun CamsTab() {
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("еЏ–з·  Speed Cams BY", style = MaterialTheme.typography.h4, color = Color.Yellow, modifier = Modifier.padding(bottom = 16.dp))
-        Text("РСЃС‚РѕС‡РЅРёРєРё Р±Р°Р· СЃРёРіРЅР°С‚СѓСЂ:", style = MaterialTheme.typography.h6, color = Color.White)
-        Text("вЂў SpeedCamOnline.ru (PoliScan, RoadEye)", color = Color.LightGray)
-        Text("вЂў Speed-Control.by (РЎС‚Р°С†РёРѕРЅР°СЂРЅС‹Рµ Р“РђР)", color = Color.LightGray)
+        Text(" Speed Cams BY", style = MaterialTheme.typography.h4, color = Color.Yellow, modifier = Modifier.padding(bottom = 16.dp))
+        Text("Источники баз сигнатур:", style = MaterialTheme.typography.h6, color = Color.White)
+        Text("• SpeedCamOnline.ru (PoliScan, RoadEye)", color = Color.LightGray)
+        Text("• Speed-Control.by (Стационарные ГАИ)", color = Color.LightGray)
         Spacer(modifier = Modifier.height(20.dp))
-        Text("РЎС‚Р°С‚СѓСЃ: Р—Р°РіСЂСѓР·РєР° РєРѕРѕСЂРґРёРЅР°С‚...", color = Color.Cyan)
+        Text("Статус: Загрузка координат...", color = Color.Cyan)
     }
 }
 
