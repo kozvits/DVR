@@ -38,8 +38,8 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
     val launcher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { result ->
+        // result.isEmpty() means no permissions were requested - treat as not granted
         if (result.isEmpty()) {
-            onPermissionsGranted()
             return@rememberLauncherForActivityResult
         }
 
@@ -69,7 +69,14 @@ fun PermissionHandler(onPermissionsGranted: () -> Unit) {
         if (alreadyGranted) {
             onPermissionsGranted()
         } else {
-            launcher.launch(permissions)
+            // Check if any permission needs to be requested before launching
+            val permissionsToRequest = permissions.filter { 
+                ContextCompat.checkSelfPermission(context, it) != PackageManager.PERMISSION_GRANTED 
+            }.toTypedArray()
+            
+            if (permissionsToRequest.isNotEmpty()) {
+                launcher.launch(permissionsToRequest)
+            }
         }
     }
 }
