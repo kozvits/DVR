@@ -1,5 +1,40 @@
-```
-.gradle/
+# Compiled and build artifacts
+*.class
+*.o
+*.obj
+*.out
 build/
+target/
+
+# Dependencies
+.gradle/
+.mypy_cache/
+.pytest_cache/
+__pycache__/
+node_modules/
+venv/
+.venv/
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.tmp
+
+# Logs
 *.log
-```
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# System
+.DS_Store
+Thumbs.db
