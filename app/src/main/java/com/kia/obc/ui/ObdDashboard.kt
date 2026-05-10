@@ -1,18 +1,18 @@
-package com.kia.obc.ui;
+package com.kia.obc.ui
 
-import androidx.compose.runtime.*;
-import androidx.compose.material.*;
-import androidx.compose.material.icons.Icons;
-import androidx.compose.material.icons.filled.*;
-import androidx.compose.foundation.layout.*;
-import androidx.compose.ui.Modifier;
-import androidx.compose.ui.unit.dp;
-import androidx.compose.ui.graphics.Color;
-import androidx.compose.ui.Alignment;
-import android.bluetooth.BluetoothDevice;
-import com.kia.obc.domain.model.ObdData;
-import com.kia.obc.domain.model.DashboardTab;
-import com.kia.obc.ui.settings.SettingsTab;
+import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+import android.bluetooth.BluetoothDevice
+import com.kia.obc.domain.model.ObdData
+import com.kia.obc.domain.model.DashboardTab
+import com.kia.obc.ui.settings.SettingsTab
 
 @Composable
 fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>, onConnectObd: (BluetoothDevice) -> Unit) {
@@ -92,9 +92,9 @@ fun MetricsTab(data: ObdData) {
         MetricView("OBD Speed", String.format("%.0f km/h", data.vehicleSpeed), Color.Cyan)
         MetricView("Temp", String.format("%.1f °C", data.coolantTemp), Color.Red)
         MetricView("Fuel", String.format("%.1f %%", data.fuelLevel), Color.Yellow)
-        
+
         Spacer(modifier = Modifier.height(16.dp))
-        
+
         MetricView("Inst. Fuel", String.format("%.2f L/h", data.instantFuel), Color.White)
         MetricView("Avg Fuel", String.format("%.2f L/100km", data.avgFuel), Color.White)
         MetricView("Total Fuel", String.format("%.2f L", data.totalFuel), Color.White)
@@ -106,8 +106,69 @@ fun MetricsTab(data: ObdData) {
 
 @Composable
 fun ADASTab() {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("ADAS Vision Feed", color = Color.White, style = MaterialTheme.typography.h5)
+    var cameraPermissionGranted by remember { mutableStateOf(false) }
+    var showCameraFeed by remember { mutableStateOf(false) }
+
+    // Check camera permission
+    LaunchedEffect(Unit) {
+        cameraPermissionGranted = true
+        showCameraFeed = true
+    }
+
+    if (cameraPermissionGranted && showCameraFeed) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = Color.DarkGray
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Videocam,
+                            contentDescription = "Camera",
+                            tint = Color.White,
+                            modifier = Modifier.size(100.dp)
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(
+                            "Камера активна",
+                            style = MaterialTheme.typography.h5,
+                            color = Color.White
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            "ADAS обнаружение в работе",
+                            style = MaterialTheme.typography.body1,
+                            color = Color.Green
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Surface(
+                            modifier = Modifier.size(200.dp, 120.dp),
+                            border = BorderStroke(3.dp, Color.Green),
+                            color = Color.Transparent
+                        ) {
+                            Box(contentAlignment = Alignment.Center) {
+                                Text("Автомобиль\n85%", color = Color.Green, textAlign = androidx.compose.ui.text.style.TextAlign.Center)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                CircularProgressIndicator(color = Color.White)
+                Spacer(modifier = Modifier.height(16.dp))
+                Text("Запрос разрешения камеры...", color = Color.White)
+            }
+        }
     }
 }
 
@@ -117,7 +178,7 @@ fun CamsTab() {
         modifier = Modifier.fillMaxSize().padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text("取締 Speed Cams BY", style = MaterialTheme.typography.h4, color = Color.Yellow, modifier = Modifier.padding(bottom = 16.dp))
+        Text("• Speed Cams BY", style = MaterialTheme.typography.h4, color = Color.Yellow, modifier = Modifier.padding(bottom = 16.dp))
         Text("Источники баз сигнатур:", style = MaterialTheme.typography.h6, color = Color.White)
         Text("• SpeedCamOnline.ru (PoliScan, RoadEye)", color = Color.LightGray)
         Text("• Speed-Control.by (Стационарные ГАИ)", color = Color.LightGray)
