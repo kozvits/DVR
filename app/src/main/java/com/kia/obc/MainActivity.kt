@@ -1,23 +1,22 @@
-package com.kia.obc;
+package com.kia.obc
 
-import android.content.Intent;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.os.Bundle;
-import androidx.activity.ComponentActivity;
-import androidx.activity.compose.setContent;
-import androidx.compose.runtime.*;
-import androidx.compose.foundation.layout.Box;
-import androidx.compose.foundation.layout.fillMaxSize;
-import androidx.compose.ui.Alignment;
-import androidx.compose.ui.Modifier;
-import androidx.compose.material.Text;
-import androidx.compose.ui.graphics.Color;
-import androidx.compose.material.CircularProgressIndicator;
-import com.kia.obc.domain.model.ObdData;
-import com.kia.obc.ui.ObdDashboard;
-import com.kia.obc.ui.PermissionHandler;
-import com.kia.obc.ui.BluetoothDevicePicker;
+import android.content.Intent
+import android.bluetooth.BluetoothAdapter
+import android.bluetooth.BluetoothDevice
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.material.Text
+import androidx.compose.ui.graphics.Color
+import androidx.compose.material.CircularProgressIndicator
+import com.kia.obc.domain.model.ObdData
+import com.kia.obc.ui.ObdDashboard
+import com.kia.obc.ui.PermissionHandler
 
 class MainActivity : ComponentActivity() {
     private val obdState = mutableStateOf(ObdData(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))

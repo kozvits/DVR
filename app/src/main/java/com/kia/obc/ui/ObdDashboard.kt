@@ -1,20 +1,19 @@
-package com.kia.obc.ui;
+package com.kia.obc.ui
 
-import androidx.compose.runtime.*;
-import androidx.compose.material.*;
-import androidx.compose.material.icons.Icons;
-import androidx.compose.material.icons.filled.*;
-import androidx.compose.material.icons.filled.Videocam;
-import androidx.compose.foundation.layout.*;
-import androidx.compose.foundation.BorderStroke;
-import androidx.compose.ui.Modifier;
-import androidx.compose.ui.unit.dp;
-import androidx.compose.ui.graphics.Color;
-import androidx.compose.ui.Alignment;
-import android.bluetooth.BluetoothDevice;
-import com.kia.obc.domain.model.ObdData;
-import com.kia.obc.domain.model.DashboardTab;
-import com.kia.obc.ui.settings.SettingsTab;
+import androidx.compose.runtime.*
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.Alignment
+import android.bluetooth.BluetoothDevice
+import com.kia.obc.domain.model.ObdData
+import com.kia.obc.domain.model.DashboardTab
+import com.kia.obc.ui.settings.SettingsTab
 
 @Composable
 fun ObdDashboard(dataState: State<ObdData>, gpsState: State<Double>, onConnectObd: (BluetoothDevice) -> Unit) {
