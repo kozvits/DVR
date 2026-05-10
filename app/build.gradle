@@ -27,7 +27,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion '1.5.3'
+        kotlinCompilerExtensionVersion '1.5.3' // Оставьте это, если вы хотите остаться на этой версии Compose
     }
 }
 
